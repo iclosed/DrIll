@@ -1,5 +1,3 @@
-
-
 class MyCircle {
 private:
 	double r;
