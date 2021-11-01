@@ -6,7 +6,7 @@
 #include <iostream>
 #include <tchar.h>
 #include "MathFunctions.h"
-#include "Circle.h"
+#include "MyCircle.h"
 
 #define MYPRINT(...) {char cad[512]; sprintf(cad, __VA_ARGS__);  OutputDebugString(cad);}
 
@@ -43,7 +43,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // Store instance handle in our global variable
     hInst = hInstance;
     
-    Circle c(3);
+    MyCircle c(3);
 	outputValue = mysqrt(1337);
     MYPRINT("\n\\fucking dubug log: %f, circle:%f\n\n\n", outputValue, c.Area())
 

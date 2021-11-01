@@ -10,7 +10,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 include_directories(src)
 add_subdirectory(src)
 
-# add the executable
 add_executable(${PROJECT_NAME} WIN32 main.cpp)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC Modules)

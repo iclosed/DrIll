@@ -1,11 +1,11 @@
 
 
-class Circle {
+class MyCircle {
 private:
 	double r;
 public:
-	Circle();
-	Circle(double r);
+	MyCircle();
+	MyCircle(double r);
 	double Area();
 };
 
