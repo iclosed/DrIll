@@ -5,8 +5,8 @@
 #include <string.h>
 #include <iostream>
 #include <tchar.h>
-#include "TutorialConfig.h"
 #include "MathFunctions.h"
+#include "Circle.h"
 
 #define MYPRINT(...) {char cad[512]; sprintf(cad, __VA_ARGS__);  OutputDebugString(cad);}
 
@@ -42,9 +42,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     // Store instance handle in our global variable
     hInst = hInstance;
-
+    
+    Circle c(3);
 	outputValue = mysqrt(1337);
-    MYPRINT("\n\\fucking dubug log: %f\n\n\n", outputValue)
+    MYPRINT("\n\\fucking dubug log: %f, circle:%f\n\n\n", outputValue, c.Area())
 
     // The parameters to CreateWindowEx explained:
     // WS_EX_OVERLAPPEDWINDOW : An optional extended window style.
@@ -98,6 +99,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     TCHAR greeting[] = _T("Hello, Windows desktop! wdnmd.");
 
     switch (message) {
+    case WM_CREATE: {
+		CreateWindow(TEXT("button"), TEXT("Print"), WS_VISIBLE | WS_CHILD, 20, 50, 80, 25, hWnd, (HMENU)1, NULL, NULL);
+        CreateWindow(TEXT("button"), TEXT("Quit"), WS_VISIBLE | WS_CHILD, 120, 50, 80, 25, hWnd, (HMENU)2, NULL, NULL);
+        break;
+    }
+    case WM_COMMAND: {
+        if (LOWORD(wParam) == 1) {
+            //greeting = _T("emmm.");
+            MYPRINT("\nclicked Button1\n")
+        }
+        if (LOWORD(wParam) == 2) {
+            PostQuitMessage(0);
+        }
+        break;
+    }
     case WM_PAINT:
         hdc = BeginPaint(hWnd, &ps);
 
