@@ -1,5 +1,3 @@
-#aux_source_directory(. DIR_SRCS)
-#add_library(Modules ${DIR_SRCS})
 
 string(REGEX REPLACE "/$" "" CURRENT_FOLDER_ABS ${CMAKE_CURRENT_SOURCE_DIR})
 string(REGEX REPLACE ".*/(.*)" "\\1" CURRENT_FOLDER ${CURRENT_FOLDER_ABS})
@@ -11,3 +9,4 @@ file(GLOB_RECURSE CURRENT_HEADERS  *.h *.hpp)
 aux_source_directory(. SRC_LIST)
 #生成应用程序 hello (在windows下会自动生成hello.exe)
 add_library(${CURRENT_FOLDER} ${SRC_LIST} ${CURRENT_HEADERS})
+

@@ -6,12 +6,12 @@ if exist %fd% (
     rd %fd% /s /q
 )
 md %fd%
-echo #
-echo ##
+echo.
+echo.
 echo ### CMake from source code...
 cmake -S src -B %fd%
-echo #
-echo ##
+echo.
+echo.
 echo ### Building from make files...
 cmake --build %fd%/
 
