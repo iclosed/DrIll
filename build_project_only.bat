@@ -16,8 +16,5 @@ echo.
 echo ### CMake from source code...
 cmake -S src -B %fd%
 echo.
-echo.
-echo ### Building from make files...
-cmake --build %fd%/
 
 pause
