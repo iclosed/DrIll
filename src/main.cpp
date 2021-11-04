@@ -30,6 +30,7 @@ static struct {
 
 // Forward declarations of functions included in this code module:
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+HWND GetTheWindowHwnd();
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
     WNDCLASSEX wcex;
@@ -55,7 +56,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     MyCircle c(3);
 	outputValue = mysqrt(1337);
     MYPRINT("\n\\fucking dubug log: %f, circle:%f\n\n\n", outputValue, c.Area());
-    
+    MYPRINT("\n\\fucking window handler %d\n\n\n", GetTheWindowHwnd());
+ 
+
 	HWND hWnd = CreateWindowEx(
         WS_EX_OVERLAPPEDWINDOW, szWindowClass, szTitle,
         WS_OVERLAPPEDWINDOW,
@@ -182,3 +185,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     }
     return 0;
 }
+
+BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
+    if (!IsWindowVisible(hwnd)) { return TRUE; }
+    if (IsIconic(hwnd)) { return TRUE; }
+    int length = GetWindowTextLength(hwnd);
+    if (length == 0) { return TRUE; }
+
+	TCHAR buffer[512];
+	SendMessage(hwnd, WM_GETTEXT, 512, (LPARAM)(void*)buffer);
+    MYPRINT("\n %s ~~ %d\n", buffer, hwnd);
+    *(reinterpret_cast<HWND*>(lParam)) = hwnd;
+	return TRUE;
+}
+
+HWND GetTheWindowHwnd() {
+    HWND find_hwnd = NULL;
+	EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(&find_hwnd));  // ±éÀú´°¿Ú
+    // if (find_hwnd != NULL) { MYPRINT("\n This is fucking insane: %d", find_hwnd); }
+    return find_hwnd;
+}
+
