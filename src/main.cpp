@@ -105,10 +105,16 @@ int buttonClick(HWND hWnd, HWND hButton) {
     return 0;    // indicate we did not process this event
 }
 
-
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
     case WM_COMMAND: {
+        //if (LOWORD(wParam) == 1) {
+        //    MYPRINT("\nclicked Button1\n")
+        //}
+        //if (LOWORD(wParam) == 2) {
+        //    PostQuitMessage(0);
+        //}
+
         int wmId = LOWORD(wParam);
         int wmCode = HIWORD(wParam);
         // Parse the menu selections:
@@ -167,59 +173,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         PostQuitMessage(0);
         break;
     }
+    case WM_CREATE: {
+		//CreateWindow(TEXT("button"), TEXT("Print"), WS_VISIBLE | WS_CHILD, 20, 50, 80, 25, hWnd, (HMENU)1, NULL, NULL);
+        //CreateWindow(TEXT("button"), TEXT("Quit"), WS_VISIBLE | WS_CHILD, 120, 50, 80, 25, hWnd, (HMENU)2, NULL, NULL);
+        break;
+    }
     default: return DefWindowProc(hWnd, message, wParam, lParam);
     }
     return 0;
 }
-
-
-
-//  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  PURPOSE:  Processes messages for the main window.
-//
-//  WM_PAINT    - Paint the main window
-//  WM_DESTROY  - post a quit message and return
-LRESULT CALLBACK WndProc11111(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
-    PAINTSTRUCT ps;
-    HDC hdc;
-	TCHAR greeting[256];
-
-    switch (message) {
-    case WM_CREATE: {
-		CreateWindow(TEXT("button"), TEXT("Print"), WS_VISIBLE | WS_CHILD, 20, 50, 80, 25, hWnd, (HMENU)1, NULL, NULL);
-        CreateWindow(TEXT("button"), TEXT("Quit"), WS_VISIBLE | WS_CHILD, 120, 50, 80, 25, hWnd, (HMENU)2, NULL, NULL);
-        break;
-    }
-    case WM_COMMAND: {
-        if (LOWORD(wParam) == 1) {
-            //greeting = _T("emmm.");
-            MYPRINT("\nclicked Button1\n")
-        }
-        if (LOWORD(wParam) == 2) {
-            PostQuitMessage(0);
-        }
-        break;
-    }
-    case WM_PAINT:
-        hdc = BeginPaint(hWnd, &ps);
-
-        // Here your application is laid out.
-        // For this introduction, we just print out "Hello, Windows desktop!"
-        // in the top left corner.
-        //TextOut(hdc, 5, 5, greeting, wcslen(greeting));
-        // End application-specific layout section.
-
-        EndPaint(hWnd, &ps);
-        break;
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
-        break;
-    }
-
-    return 0;
-}
-
