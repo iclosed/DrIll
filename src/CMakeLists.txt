@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_executable(${PROJECT_NAME} WIN32 main.cpp)
 
 # modules to import
-list(APPEND EXTRA_LIBS _example_module)
+list(APPEND EXTRA_LIBS example_module)
 list(APPEND EXTRA_LIBS m_window)
 list(APPEND EXTRA_LIBS mod1)
 list(APPEND EXTRA_LIBS mod2)
