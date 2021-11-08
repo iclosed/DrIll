@@ -31,11 +31,11 @@ static struct {
 
 // Forward declarations of functions included in this code module:
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
-HWND GetTheWindowHwnd();
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
     MYPRINT("\nhahaha %d\n\n", WinController::find_window_hwnd("œﬂ…œ"));
     return 0;
+
     WNDCLASSEX wcex;
 
     wcex.cbSize = sizeof(WNDCLASSEX);
@@ -59,7 +59,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     MyCircle c(3);
 	outputValue = mysqrt(1337);
     MYPRINT("\n\\fucking dubug log: %f, circle:%f\n\n\n", outputValue, c.Area());
-    MYPRINT("\n\\fucking window handler %d\n\n\n", GetTheWindowHwnd());
  
 
 	HWND hWnd = CreateWindowEx(
