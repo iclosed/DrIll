@@ -5,8 +5,9 @@
 #include <tchar.h>
 #include "MathFunctions.h"
 #include "MyCircle.h"
+#include "window_controller.h"
 
-#define MYPRINT(...) {char cad[512]; sprintf_s(cad, __VA_ARGS__);  OutputDebugString(cad);}
+#define MYPRINT(...) {char output[512]; sprintf_s(output, __VA_ARGS__);  OutputDebugString(output);}
 
 // Global variables
 static TCHAR szWindowClass[] = _T("DeskTopApp");  // The main window class name.
@@ -33,6 +34,8 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 HWND GetTheWindowHwnd();
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+    MYPRINT("\nhahaha %d\n\n", WinController::find_window_hwnd("线上"));
+    return 0;
     WNDCLASSEX wcex;
 
     wcex.cbSize = sizeof(WNDCLASSEX);
@@ -185,24 +188,3 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     }
     return 0;
 }
-
-BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
-    if (!IsWindowVisible(hwnd)) { return TRUE; }
-    if (IsIconic(hwnd)) { return TRUE; }
-    int length = GetWindowTextLength(hwnd);
-    if (length == 0) { return TRUE; }
-
-	TCHAR buffer[512];
-	SendMessage(hwnd, WM_GETTEXT, 512, (LPARAM)(void*)buffer);
-    MYPRINT("\n %s ~~ %d\n", buffer, hwnd);
-    *(reinterpret_cast<HWND*>(lParam)) = hwnd;
-	return TRUE;
-}
-
-HWND GetTheWindowHwnd() {
-    HWND find_hwnd = NULL;
-	EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(&find_hwnd));  // 遍历窗口
-    // if (find_hwnd != NULL) { MYPRINT("\n This is fucking insane: %d", find_hwnd); }
-    return find_hwnd;
-}
-
