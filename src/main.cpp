@@ -34,6 +34,10 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
     MYPRINT("\nhahaha %d\n\n", WinController::find_window_hwnd("œﬂ…œ"));
+    UINT x = 348;
+    UINT y = 132;
+    PostMessage(hd, WM_RBUTTONDOWN, 0, x + (y << 16));
+    PostMessage(hd, WM_RBUTTONUP, 0, x + (y << 16));
     return 0;
 
     WNDCLASSEX wcex;
