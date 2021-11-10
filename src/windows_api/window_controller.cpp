@@ -1,19 +1,20 @@
 #include "window_controller.h"
 
 BOOL WinController::is_valid() {
-	if (this->self_hwnd > 0) {
+	if (this->hwnd > 0) {
 		return TRUE;
 	}
 	return FALSE;
 }
 
-HWND WinController::find_window_hwnd(PCSTR title_part) {
+/* 这里是找到第一个匹配关键字的窗口，后面可以做一组窗口查找 */
+QueryStruct WinController::find_window_hwnd(PCSTR title_part) {
 	QueryStruct query = QueryStruct(title_part);
 
     EnumWindows(  // 遍历窗口
 		[](HWND hwnd, LPARAM lParam) -> BOOL {
 			if (!IsWindowVisible(hwnd)) { return TRUE; }
-			if (IsIconic(hwnd)) { return TRUE; }
+			//if (IsIconic(hwnd)) { return TRUE; }  // 最小化的窗口
 			int length = GetWindowTextLength(hwnd);
 			if (length == 0) { return TRUE; }
 
@@ -29,23 +30,13 @@ HWND WinController::find_window_hwnd(PCSTR title_part) {
 		},
 		reinterpret_cast<LPARAM>(&query)
 	);
-    return query.hwnd;
+    return query;
 }
 
-WinController::WinController() {
-	this->num = 0;
-	this->self_hwnd = HWND();
-}
-
-WinController::WinController(HWND hwnd) {
-	this->num = 0;
-	this->self_hwnd = hwnd;
-}
-
-WinController::WinController(PCSTR title_str) {
-	this->num = 1;
-	this->self_hwnd = NULL;
-    PCSTR astr = "student";
+WinController::WinController(PCSTR title_part) {
+	QueryStruct res = WinController::find_window_hwnd(title_part);
+	this->hwnd = res.hwnd;
+	this->title = res.title;
 }
 
 BOOL WinController::click_at_pos(UINT x, UINT y) {
