@@ -1,10 +1,9 @@
 @echo off
 set fd=release
-cmake --version
 if exist %fd% (
 	echo.
 	echo ### Delete old build files
-    rd %fd% /s /q
+    rd %fd% /s/q
 )
 if not exist %fd% (
 	echo.
@@ -19,5 +18,10 @@ echo.
 echo.
 echo ### Building from make files...
 cmake --build %fd%/ --config Release
+
+ren %fd% tmp
+md %fd%
+xcopy "tmp\Release\*.*" %fd% /s/h/e/k/f/c
+rd tmp /s/q
 
 pause
