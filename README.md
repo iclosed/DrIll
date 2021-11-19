@@ -2,11 +2,12 @@
 
 ## Introduction
 DrIll means drill.
-A tool to find windows and send Keyboard or Mouse message to them.
-with window frame capture and opencv's matching, it can automatically do some tasks.
 
-Pure c++ project, built with cmake & vs2019.
-rely on OpenCV 4.5.4
+A tool to **find** windows and send **keyboard or mouse** message to them.
+
+With window frame capture and opencv's matching, it can automatically do some tasks.
+
+Pure c++ project, built with cmake & vs2019. (rely on OpenCV 4.5.4)
 
 ## Usage
 ### Use it only

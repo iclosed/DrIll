@@ -8,18 +8,27 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(OpenCV_DIR "../opencv")
 
-find_package( OpenCV REQUIRED )
 
 add_executable(${PROJECT_NAME} WIN32 main.cpp)
 
-# modules to import
-list(APPEND EXTRA_LIBS example_module)
-list(APPEND EXTRA_LIBS m_window)
+# 3rd party libs:
+find_package(OpenCV REQUIRED)
+#message(STATUS "config: ${OpenCV_DIR}")
+#message(STATUS "version: ${OpenCV_VERSION}")
+#message(STATUS "libraries: ${OpenCV_LIBS}")
+#message(STATUS "include path: ${OpenCV_INCLUDE_DIRS}")
+target_link_libraries(${PROJECT_NAME} PRIVATE ${OpenCV_LIBS})
+include_directories(${OpenCV_INCLUDE_DIRS})
+
+# modules to import:
+list(APPEND EXTRA_LIBS _m_example)
+list(APPEND EXTRA_LIBS test_circle)
+list(APPEND EXTRA_LIBS img_proc)
 list(APPEND EXTRA_LIBS mod1)
 list(APPEND EXTRA_LIBS mod2)
 list(APPEND EXTRA_LIBS windows_api)
-target_link_libraries(${PROJECT_NAME} PUBLIC ${EXTRA_LIBS})
-# message(STATUS "~~~ Extra libs are: ${EXTRA_LIBS}")
+target_link_libraries(${PROJECT_NAME} PRIVATE ${EXTRA_LIBS})
+#message(STATUS "~~~ Extra libs are: ${EXTRA_LIBS}")
 foreach(LETTER IN LISTS EXTRA_LIBS)
 	include_directories(${LETTER})
 	add_subdirectory(${LETTER})
