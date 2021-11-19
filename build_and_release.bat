@@ -22,6 +22,7 @@ cmake --build %fd%/ --config Release
 ren %fd% tmp
 md %fd%
 xcopy "tmp\Release\*.*" %fd% /s/h/e/k/f/c
+xcopy "opencv\x64\vc15\bin\opencv_world454.dll" %fd% /s/h/e/k/f/c
 rd tmp /s/q
 
 pause
