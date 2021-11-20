@@ -5,6 +5,7 @@
 #include <tchar.h>
 #include "MathFunctions.h"
 #include "MyCircle.h"
+#include "img_proc.h"
 #include "window_controller.h"
 
 #define MYPRINT(...) {char output[512]; sprintf_s(output, __VA_ARGS__);  OutputDebugString(output);}
@@ -33,13 +34,14 @@ static struct {
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+    match_img("res/astro_cat.png", "res/saturn.png");
     //MYPRINT("\nhahaha %d\n\n", WinController::find_window_hwnd("ÏßÉÏ"));
+
     WinController win = WinController("ÍøÒ×");
-    MYPRINT("\n emmmmmmmmmmmmmmmmmmmmmmmmm: %s(%d)\n", win.get_title(), win.get_hwnd());
     UINT x = 348;
     UINT y = 132;
-    PostMessage(win.get_hwnd(), WM_RBUTTONDOWN, 0, x + (y << 16));
-    PostMessage(win.get_hwnd(), WM_RBUTTONUP, 0, x + (y << 16));
+    //PostMessage(win.get_hwnd(), WM_RBUTTONDOWN, 0, x + (y << 16));
+    //PostMessage(win.get_hwnd(), WM_RBUTTONUP, 0, x + (y << 16));
     return 0;
 
     WNDCLASSEX wcex;
