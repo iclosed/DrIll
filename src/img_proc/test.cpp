@@ -1,4 +1,3 @@
-
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -6,7 +5,6 @@
 #include <Windows.h>
 
 using namespace std;
-cv::Mat captureScreenMat(HWND hwnd);
 
 HWND hpopo;
 
@@ -35,12 +33,21 @@ cv::Mat captureScreenMat(HWND hwnd) {
 	HDC hwindowDC = GetDC(hwnd);
 	HDC hwindowCompatibleDC = CreateCompatibleDC(hwindowDC);
 	SetStretchBltMode(hwindowCompatibleDC, COLORONCOLOR);
-
+	// This is the best stretch mode:
+	//SetStretchBltMode(hdcWindow, HALFTONE);
+	
 	// define scale, height and width
-	int screenx = GetSystemMetrics(SM_XVIRTUALSCREEN);
-	int screeny = GetSystemMetrics(SM_YVIRTUALSCREEN);
-	int width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-	int height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+	//int screenx = GetSystemMetrics(SM_XVIRTUALSCREEN);
+	//int screeny = GetSystemMetrics(SM_YVIRTUALSCREEN);
+	//int width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+	//int height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+
+	RECT r;
+	GetWindowRect(hwnd, &r);
+	int window_x = r.left;
+	int window_y = r.top;
+	int width = r.right - r.left;
+	int height = r.bottom - r.top;
 
 	// create mat object
 	src.create(height, width, CV_8UC4);
@@ -52,20 +59,25 @@ cv::Mat captureScreenMat(HWND hwnd) {
 	// use the previously created device context with the bitmap
 	SelectObject(hwindowCompatibleDC, hbwindow);
 
+
 	// copy from the window device context to the bitmap device context
-	StretchBlt(hwindowCompatibleDC, 0, 0, width, height, hwindowDC, screenx, screeny, width, height, SRCCOPY);  //change SRCCOPY to NOTSRCCOPY for wacky colors !
+	StretchBlt(hwindowCompatibleDC, 0, 0, width, height, hwindowDC, 0, 0, width, height, SRCCOPY);  //change SRCCOPY to NOTSRCCOPY for wacky colors !
+	//BitBlt(hwindowCompatibleDC, 0, 0, width, height, hwindowDC, 0, 0, SRCCOPY);
 	GetDIBits(hwindowCompatibleDC, hbwindow, 0, height, src.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);            //copy from hwindowCompatibleDC to hbwindow
 
 	// avoid memory leak
 	DeleteObject(hbwindow);
 	DeleteDC(hwindowCompatibleDC);
 	ReleaseDC(hwnd, hwindowDC);
-
-	return src;
+	
+	cv::Mat dst;
+	dst.create(height, width, CV_8UC3);
+	cv::cvtColor(src, dst, cv::COLOR_BGRA2BGR);
+	return dst;
 }
 
 void on_matching(char* src, char* tmp) {
-	int matchMethod = cv::TM_SQDIFF;
+	int matchMethod = cv::TM_SQDIFF_NORMED;
 	cv::Mat srcImage, tmpImage, g_resultImage;
 	//srcImage = cv::imread(src);
 	//tmpImage = cv::imread(tmp);
@@ -87,13 +99,10 @@ void on_matching(char* src, char* tmp) {
 		}, NULL
 	);
 
-	std::cout << "emmmmm" << hpopo << std::endl;
 
 	srcImage = captureScreenMat(hpopo);
-	cv::imshow("wuwuwu", srcImage);
-	return;
 	//srcImage = captureScreenMat(GetDesktopWindow());
-	tmpImage = cv::imread("emm.png");
+	tmpImage = cv::imread("tmp.png");
 	matchTemplate(srcImage, tmpImage, g_resultImage, matchMethod);
 
 	// find best match point(matchloc)
@@ -101,6 +110,8 @@ void on_matching(char* src, char* tmp) {
 	cv::Point minloc, maxloc, matchloc;
 	cv::minMaxLoc(g_resultImage, &minval, &maxval, &minloc, &maxloc);
 	matchloc = (matchMethod == cv::TM_SQDIFF || matchMethod == cv::TM_SQDIFF_NORMED) ? minloc : maxloc;
+
+	std::cout << "Matching... min_val:" << minval << "max_val:" << maxval << std::endl;
 
 	cv::rectangle(srcImage, matchloc, cv::Point(matchloc.x + tmpImage.cols, matchloc.y + tmpImage.rows), cv::Scalar(0, 0, 255), 2, 8, 0);
 	cv::imshow("raw_pic", srcImage);
