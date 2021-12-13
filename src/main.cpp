@@ -3,9 +3,8 @@
 #include <string>
 #include <iostream>
 #include <tchar.h>
-#include "MathFunctions.h"
-#include "MyCircle.h"
 #include "img_proc.h"
+#include "sample_mod.h"
 #include "window_controller.h"
 
 #define MYPRINT(...) {char output[512]; sprintf_s(output, __VA_ARGS__);  OutputDebugString(output);}

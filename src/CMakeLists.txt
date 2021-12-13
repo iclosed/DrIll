@@ -22,10 +22,7 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 
 # modules to import:
 list(APPEND EXTRA_LIBS _m_example)
-list(APPEND EXTRA_LIBS test_circle)
 list(APPEND EXTRA_LIBS img_proc)
-list(APPEND EXTRA_LIBS mod1)
-list(APPEND EXTRA_LIBS mod2)
 list(APPEND EXTRA_LIBS windows_api)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${EXTRA_LIBS})
 #message(STATUS "~~~ Extra libs are: ${EXTRA_LIBS}")
