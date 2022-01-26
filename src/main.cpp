@@ -134,6 +134,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		case 4:
 			break;
 		case 5:
+			RECT rect;
+			//if (GetWindowRect(hwnd, &rect)) {
+				//int width = rect.right - rect.left;
+				//int height = rect.bottom - rect.top;
+			//}
 			UINT x = 348;
 			UINT y = 132;
 			PostMessage(target_hwnd, WM_RBUTTONDOWN, 0, x + (y << 16));
