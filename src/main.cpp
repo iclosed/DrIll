@@ -91,9 +91,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     ShowWindow(hWnd, nCmdShow);  // nCmdShow: the fourth parameter from WinMain
     UpdateWindow(hWnd);
 
-    RegisterHotKey(hWnd, 2, MOD_CONTROL | MOD_NOREPEAT,'B');// Ctrl + B
-    RegisterHotKey(hWnd, 4, MOD_ALT | MOD_NOREPEAT, 0x42);    // Alt + B  0x42 is 'B'
-    RegisterHotKey(hWnd, 5, MOD_NOREPEAT, 'F');              // 直接按 F
+    RegisterHotKey(hWnd, 1, MOD_NOREPEAT, 'X');  // 直接按键
+    RegisterHotKey(hWnd, 2, MOD_NOREPEAT, 'C');
+    RegisterHotKey(hWnd, 3, MOD_CONTROL | MOD_NOREPEAT,'X');  // Ctrl + ..
+    RegisterHotKey(hWnd, 4, MOD_CONTROL | MOD_NOREPEAT,'C');
+    //RegisterHotKey(hWnd, 3, MOD_ALT | MOD_NOREPEAT,'X');  // Alt + ..
+    //RegisterHotKey(hWnd, 4, MOD_ALT | MOD_NOREPEAT,'C');
+    //RegisterHotKey(hWnd, 4, MOD_ALT | MOD_NOREPEAT, 0x42);    // Alt + B  0x42 is 'B'
+    //RegisterHotKey(hWnd, 5, MOD_NOREPEAT, 'F');              // 直接按 F
 
     // Main message loop:
     MSG msg;
@@ -125,24 +130,27 @@ int buttonClick(HWND hWnd, HWND hButton) {
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
 	case WM_HOTKEY: {
-        HWND target_hwnd = WinController::find_window_hwnd("POPO").hwnd;
+        HWND target_hwnd = WinController::find_window_hwnd("Cuboid Outpost").hwnd;
+		MYPRINT("\n target hwnd: %d \n", target_hwnd);
+        RECT rect;
+        if (!GetWindowRect(target_hwnd, &rect)) break;
+		int width = rect.right - rect.left;
+		int height = rect.bottom - rect.top;
+		MYPRINT("\n window size %d, %d", width, height);
+		UINT cx = width / 2;
+		UINT cy = height / 2;
 		switch(LOWORD(wParam)) {
 		case 1:
+			PostMessage(target_hwnd, WM_LBUTTONDOWN, 0, cx + (cy << 16));
 			break;
 		case 2:
+			PostMessage(target_hwnd, WM_RBUTTONDOWN, 0, cx + (cy << 16));
+			break;
+		case 3:
+			PostMessage(target_hwnd, WM_LBUTTONUP, 0, cx + (cy << 16));
 			break;
 		case 4:
-			break;
-		case 5:
-			RECT rect;
-			//if (GetWindowRect(hwnd, &rect)) {
-				//int width = rect.right - rect.left;
-				//int height = rect.bottom - rect.top;
-			//}
-			UINT x = 348;
-			UINT y = 132;
-			PostMessage(target_hwnd, WM_RBUTTONDOWN, 0, x + (y << 16));
-			PostMessage(target_hwnd, WM_RBUTTONUP, 0, x + (y << 16));
+			PostMessage(target_hwnd, WM_RBUTTONUP, 0, cx + (cy << 16));
 			break;
 		}
 	}
