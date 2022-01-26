@@ -3,9 +3,10 @@
 #include <string>
 #include <iostream>
 #include <tchar.h>
-#include "img_proc.h"
 #include "sample_mod.h"
 #include "window_controller.h"
+
+//#include "img_proc.h"
 
 #define MYPRINT(...) {char output[512]; sprintf_s(output, __VA_ARGS__);  OutputDebugString(output);}
 
@@ -33,7 +34,7 @@ static struct {
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-    match_img("res/astro_cat.png", "res/saturn.png");
+    //match_img("res/astro_cat.png", "res/saturn.png");
     //MYPRINT("\nhahaha %d\n\n", WinController::find_window_hwnd("线上"));
 
     WinController win = WinController("网易");
@@ -41,7 +42,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     UINT y = 132;
     //PostMessage(win.get_hwnd(), WM_RBUTTONDOWN, 0, x + (y << 16));
     //PostMessage(win.get_hwnd(), WM_RBUTTONUP, 0, x + (y << 16));
-    return 0;
+    //return 0;
 
     WNDCLASSEX wcex;
 
@@ -90,6 +91,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     ShowWindow(hWnd, nCmdShow);  // nCmdShow: the fourth parameter from WinMain
     UpdateWindow(hWnd);
 
+    RegisterHotKey(hWnd, 2, MOD_CONTROL | MOD_NOREPEAT,'B');// Ctrl + B
+    RegisterHotKey(hWnd, 4, MOD_ALT | MOD_NOREPEAT, 0x42);    // Alt + B  0x42 is 'B'
+    RegisterHotKey(hWnd, 5, MOD_NOREPEAT, 'F');              // 直接按 F
+
     // Main message loop:
     MSG msg;
     while (GetMessage(&msg, NULL, 0, 0)) {
@@ -119,6 +124,23 @@ int buttonClick(HWND hWnd, HWND hButton) {
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
+	case WM_HOTKEY: {
+        HWND target_hwnd = WinController::find_window_hwnd("POPO").hwnd;
+		switch(LOWORD(wParam)) {
+		case 1:
+			break;
+		case 2:
+			break;
+		case 4:
+			break;
+		case 5:
+			UINT x = 348;
+			UINT y = 132;
+			PostMessage(target_hwnd, WM_RBUTTONDOWN, 0, x + (y << 16));
+			PostMessage(target_hwnd, WM_RBUTTONUP, 0, x + (y << 16));
+			break;
+		}
+	}
     case WM_COMMAND: {
         //if (LOWORD(wParam) == 1) {
         //    MYPRINT("\nclicked Button1\n")

@@ -7,7 +7,7 @@ if exist %fd% (
 )
 if not exist %fd% (
 	echo.
-	echo ### Make Directory build/
+	echo ### Make Directory release/
 	md %fd%
 )
 echo.
